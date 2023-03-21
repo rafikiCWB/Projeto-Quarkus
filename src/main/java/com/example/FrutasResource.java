@@ -1,6 +1,6 @@
 package com.example;
 
-import javax.transaction.Transactional;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -11,18 +11,17 @@ import java.util.List;
 @Path("/frutas")
 public class FrutasResource {
 
+    @Inject
+    FrutasService frutasService;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Fruta> list() {
-        return Fruta.listAll();
+        return frutasService.list();
     }
 
     @POST
-    @Transactional
-    public void novaFruta() {
-        Fruta fruta = new Fruta();
-        fruta.nome = "Banana";
-        fruta.qtd = 5;
-        fruta.persist();
+    public void novaFruta(InserirFrutaDTO inserirFrutaDTO) {
+        frutasService.notaFruta(inserirFrutaDTO);
     }
 }
